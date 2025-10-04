@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cleaning Pro 360 – Checklist</title>
+  <style>
+    body,html {
+      margin:0;
+      background:#fff;
+    }
+    .wrap {
+      max-width:1000px;
+      margin:0 auto;
+      padding:16px;
+      display:flex;
+      justify-content:center;
+    }
+    img.checklist {
+      max-width:100%;
+      height:auto;
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+    .toast {
+      position:fixed;
+      top:12px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#c62828;
+      color:#fff;
+      font:600 14px/1.3 Arial,sans-serif;
+      padding:10px 14px;
+      border-radius:8px;
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:9999;
+    }
+    .toast.show {
+      opacity:1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Mensaje emergente -->
+  <div class="toast" id="toast">⚠️ Download is disabled to protect formatting. Please use the online version.</div>
+
+  <!-- Imagen central -->
+  <div class="wrap">
+    <img class="checklist"
+      src="https://i.ibb.co/Ppn5th6/cleaning-pro-360-checklist.png"
+      alt="Cleaning Pro 360 – Checklist"
+      draggable="false"
+      oncontextmenu="return false;">
+  </div>
+
+  <script>
+    const toast = document.getElementById('toast');
+    let hideTimer;
+    function warn() {
+      clearTimeout(hideTimer);
+      toast.classList.add('show');
+      hideTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+    }
+
+    // Bloquear clic derecho
+    document.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      warn();
+    });
+
+    // Bloquear atajos comunes: Ctrl+S, Ctrl+P, Ctrl+U
+    document.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase();
+      if ((e.ctrlKey || e.metaKey) && ['s','p','u'].includes(k)) {
+        e.preventDefault();
+        warn();
+      }
+    });
+
+    // Evitar arrastrar la imagen
+    document.addEventListener('dragstart', e => {
+      e.preventDefault();
+    });
+
+    // Long press en móviles (iOS / Android)
+    let touchTimer;
+    document.addEventListener('touchstart', () => {
+      touchTimer = setTimeout(warn, 500);
+    }, { passive: true });
+    document.addEventListener('touchend', () => {
+      clearTimeout(touchTimer);
+    }, { passive: true });
+  </script>
+</body>
+</html>
